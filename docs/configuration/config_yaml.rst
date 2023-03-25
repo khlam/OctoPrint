@@ -1197,7 +1197,7 @@ Use the following settings to configure webcam support:
      bitrate: 5000k
 
      # Whether to include a "created with OctoPrint" watermark in the generated timelapse movies
-     watermark: true
+     watermark: false
 
      # Whether to flip the webcam horizontally
      flipH: false
@@ -1212,7 +1212,7 @@ Use the following settings to configure webcam support:
      timelapse:
 
        # The timelapse type. Can be either "off", "zchange" or "timed". Defaults to "off"
-       type: timed
+       type: zchange
 
        # The framerate at which to render the movie
        fps: 25

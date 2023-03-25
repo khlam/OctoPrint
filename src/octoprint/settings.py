@@ -244,7 +244,7 @@ default_settings = {
         "ffmpegThreads": 1,
         "ffmpegVideoCodec": "libx264",
         "bitrate": "10000k",
-        "watermark": True,
+        "watermark": False,
         "flipH": False,
         "flipV": False,
         "rotate90": False,
