@@ -57,7 +57,7 @@ core_deps = [
     "psutil>=5.8,<6",
     "pylru>=1.2,<2",
     "pyserial>=3.4,<4",
-    "PyYAML>=5.4.1,<6",
+    "pyyaml==6.0.1,<7",
     "requests>=2.26.0,<3",
     "sarge==0.1.6",
     "semantic_version>=2.8.5,<3",
