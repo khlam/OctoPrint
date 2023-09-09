@@ -177,6 +177,9 @@ class ControlProperties:
     attr_license = "__plugin_license__"
     """ Module attribute from which to retrieve the plugin's license. """
 
+    attr_privacypolicy = "__plugin_privacypolicy__"
+    """ Module attribute from which to retrieve the plugin's privacy policy URL, if any. """
+
     attr_pythoncompat = "__plugin_pythoncompat__"
     """
     Module attribute from which to retrieve the plugin's python compatibility string.
@@ -574,7 +577,9 @@ class PluginInfo:
             self._version
             if self._version is not None
             else self._get_instance_attribute(
-                ControlProperties.attr_version, default=self._version, incl_metadata=True
+                ControlProperties.attr_version,
+                default=self._version,
+                incl_metadata=True,
             )
         )
 
@@ -615,6 +620,19 @@ class PluginInfo:
         """
         return self._get_instance_attribute(
             ControlProperties.attr_license, default=self._license, incl_metadata=True
+        )
+
+    @property
+    def privacypolicy(self):
+        """
+        Privacy Policy URL of the plugin. Will be taken from the privacy policy attribute of the plugin module
+        as defined in :attr:`attr_privacypolicy` if available. May be None.
+
+        Returns:
+            str or None: Privacy Policy URL of the plugin.
+        """
+        return self._get_instance_attribute(
+            ControlProperties.attr_privacypolicy, default=None, incl_metadata=True
         )
 
     @property
@@ -943,7 +961,9 @@ class PluginManager:
         if self.plugin_folders:
             try:
                 added, found = self._find_plugins_from_folders(
-                    self.plugin_folders, existing, ignored_uninstalled=ignore_uninstalled
+                    self.plugin_folders,
+                    existing,
+                    ignored_uninstalled=ignore_uninstalled,
                 )
                 result_added.update(added)
                 result_found += found
@@ -1775,7 +1795,10 @@ class PluginManager:
         plugin_hooks = plugin.hooks.keys()
 
         return any(
-            map(lambda hook: PluginManager.hook_matches_hooks(hook, *hooks), plugin_hooks)
+            map(
+                lambda hook: PluginManager.hook_matches_hooks(hook, *hooks),
+                plugin_hooks,
+            )
         )
 
     @staticmethod
@@ -2152,7 +2175,7 @@ class PluginManager:
 
             plugin_info = self.get_plugin_info(impl[0], require_enabled=False)
             return (
-                sv(sorting_value),
+                sv(sorting_value, default_value=self.default_order),
                 not plugin_info.bundled if plugin_info else True,
                 sv(impl[0]),
             )
@@ -2334,7 +2357,8 @@ class EntryPointMetadata(pkginfo.Distribution):
         warnings.warn(
             "No package metadata found for package {}".format(
                 self.entry_point.module_name
-            )
+            ),
+            stacklevel=2,
         )
 
 
